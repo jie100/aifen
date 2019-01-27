@@ -52,7 +52,7 @@
         </div>
         <dir class="row tips">
           <div class="col-2 pw_icon"></div>
-          <div class="col-8">为注册的手机号将自动创建账号</div>
+          <div class="col-8">未注册的手机号将自动创建账号</div>
         </dir>
         <div class="row">
           <div @click="login" class="col-8 m-auto login_btn">登录</div>

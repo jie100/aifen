@@ -14,7 +14,7 @@
     <img class="consult_banner" ref="banner" src="../assets/images/consult.jpg">
     <div class="consult_content" :style="{ height: (height_calc+'px') }" ref="list">
       <ul class="consult_content_list" ref="list_in">
-        <li class="content_box" v-for="consult in getConsults">
+        <li class="content_box" v-for="consult in getConsults" :key="consult.contentId">
           <div class="row" @click="viewDetail(consult.contentId)">
             <div class="col-8">
               <div class="fz-14">{{ consult.titleName }}</div>
@@ -35,9 +35,7 @@
         <i class="fa fa-spinner fa-lg transform" aria-hidden="true"></i>
         <span>Loading</span>
       </div>
-      <div class="loading fz-12" v-if="end">
-        已经到底啦！
-      </div>
+      <div class="loading fz-12" v-if="end">已经到底啦！</div>
     </div>
   </div>
 </template>
@@ -67,23 +65,37 @@ export default {
   mounted() {
     const id = requestId.listId.consult_hot;
     this.toGetArticleList(id, this.pageNumber);
+    const self = this;
+    const timer = setTimeout(() => {
+      if ( !this.height_calc && this.$refs.consult.offsetHeight && this.$refs.banner.offsetHeight ) {
+        this.height_calc = this.$refs.consult.offsetHeight - this.$refs.banner.offsetHeight - 40;
+        clearTimeout(timer);
+      }
+    }, 100);
   },
   activated() {
     const list = this.$refs.list;
-    const id = this.pageTitle === "热门资讯" ? requestId.listId.consult_hot : requestId.listId.consult_related;
+    const id =
+      this.pageTitle === "热门资讯"
+        ? requestId.listId.consult_hot
+        : requestId.listId.consult_related;
     list.addEventListener("scroll", () => {
       let listFixedHeight = this.height_calc;
       let scrollHeight = this.$refs.list_in.offsetHeight;
       let dyHeight = scrollHeight - listFixedHeight;
-      if (list.scrollTop >= dyHeight && this.pageNumber <= this.totalPages && !this.loading ) {
+      if (
+        list.scrollTop >= dyHeight &&
+        this.pageNumber <= this.totalPages &&
+        !this.loading
+      ) {
         this.toGetArticleList(id, this.pageNumber);
-      }else if(this.pageNumber > this.totalPages){
+      } else if (this.pageNumber > this.totalPages) {
         this.end = true;
       }
     });
   },
-  computed:{
-    getConsults(){
+  computed: {
+    getConsults() {
       return this.consults;
     }
   },
@@ -102,39 +114,27 @@ export default {
         let contents = [];
         if (res.status === 200) {
           this.pageNumber++;
-          //console.log(this.pageNumber);
           contents = res.data.collection;
           this.totalPages = res.data.totalCount;
-          //console.log(this.totalPages);
           contents.forEach(item => {
             item.createTime = this.formatDate(item.createTime);
             item.titleUrl = this.imgPrePath + item.titleUrl;
           });
           this.consults = this.consults.concat(contents);
           this.loading = false;
-          if (
-            !this.height_calc &&
-            this.$refs.consult.offsetHeight &&
-            this.$refs.banner.offsetHeight
-          ) {
-            this.height_calc =
-              this.$refs.consult.offsetHeight -
-              this.$refs.banner.offsetHeight -
-              40;
-          }
         }
       });
     },
     changToCurrent(text) {
       let id = 0;
-      if( text === "hot" && !this.active ){
+      if (text === "hot" && !this.active) {
         this.active = true;
         this.pageTitle = "热门资讯";
         id = requestId.listId.consult_hot;
         this.pageNumber = 1;
         this.consults = [];
         this.toGetArticleList(id, this.pageNumber);
-      }else if( text === "related" && this.active ){
+      } else if (text === "related" && this.active) {
         this.active = false;
         this.pageTitle = "相关报道";
         id = requestId.listId.consult_related;
@@ -149,7 +149,7 @@ export default {
       this.$router.push("/article");
     }
   },
-  destroyed(){
+  destroyed() {
     this.end = false;
   }
 };

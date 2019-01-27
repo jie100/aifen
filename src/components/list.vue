@@ -3,7 +3,7 @@
     <div class="m-t-15 fz-14" style="text-align:center;" v-if="!hasContent">对不起，没有找到你要搜索的文章</div>
     <div class="member_content" ref="list">
       <ul class="member_content_list" ref="scroll_box">
-        <li class="content_box" v-for="member in members">
+        <li class="content_box" v-for="member in members" :key="member.contentId">
           <div class="row" @click="viewDetail(member.contentId)">
             <div class="col-8">
               <div class="fz-14">{{ member.titleName }}</div>

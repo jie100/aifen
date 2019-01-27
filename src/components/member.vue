@@ -27,7 +27,7 @@
     </nav>
     <div class="member_content" ref="list">
       <ul class="member_content_list" ref="scroll_box">
-        <li class="content_box" v-for="member in getMembers">
+        <li class="content_box" v-for="member in getMembers" :key="member.contentId">
           <div class="row" @click="viewDetail(member.contentId)">
             <div class="col-8">
               <div class="fz-14">{{ member.titleName }}</div>

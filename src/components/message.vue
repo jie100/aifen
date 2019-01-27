@@ -1,7 +1,7 @@
 <template>
   <div class="main message">
     <ul class="message_list">
-      <li class="message_box" v-for="item in messagesList">
+      <li class="message_box" v-for="item in messagesList" :key="item.asker_words">
         <div class="row">
           <!-- <div class="col-2">
                   <img class="head_pic" :src="item.imgSrc">
