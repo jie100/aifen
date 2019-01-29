@@ -152,6 +152,7 @@ export default {
             this.$router.push("/register");
           }else if( !res.data || res.data.message !== "请补全信息" ){
             this.$store.commit("setToken", res.data.token);
+            this.$store.commit("setUserName", res.data.name);
             cookie.setCookie("phone", userInfo.phone);
             cookie.setCookie("token", res.data.token);
             this.$router.push("/home");
