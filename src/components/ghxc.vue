@@ -46,6 +46,8 @@ export default {
 .row {
   margin: 0;
   padding: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .ghxc {
@@ -63,6 +65,7 @@ export default {
   background-size: 100% auto;
   background-position: left bottom;
   background-repeat: no-repeat;
+  z-index: 0;
 }
 
 .ghxc_title {

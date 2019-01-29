@@ -94,7 +94,7 @@ export default {
         : requestId.listId.member_pioneer;
     list.addEventListener("scroll", () => {
       let scrollHeight = this.$refs.scroll_box.offsetHeight;
-      let dyHeight = scrollHeight - listFixedHeight;
+      let dyHeight = scrollHeight - listFixedHeight - 10;
       if (list.scrollTop >= dyHeight && this.pageNumber <= this.totalPages && !this.loading) {
         this.toGetArticleList(id, this.pageNumber);
       }else if(this.pageNumber > this.totalPages){

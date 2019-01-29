@@ -4,8 +4,8 @@
       <div class="back_icon col-1 m-auto">
         <i @click="goBack" class="fa fa-chevron-left" aria-label="Add Row" title="Add Row"></i>
       </div>
-      <div class="title col-11 m-auto">
-        <div class="row col-10 m-auto">
+      <div class="title col-10 m-auto">
+        <div class="row col-11 m-auto">
           <div @click="changToCurrent('hot')" class="col-6" :class="active?'active':''">热门咨询</div>
           <div @click="changToCurrent('related')" class="col-6" :class="!active?'active':''">相关报道</div>
         </div>
@@ -65,15 +65,16 @@ export default {
   mounted() {
     const id = requestId.listId.consult_hot;
     this.toGetArticleList(id, this.pageNumber);
+  },
+  activated() {
     const self = this;
     const timer = setTimeout(() => {
       if ( !this.height_calc && this.$refs.consult.offsetHeight && this.$refs.banner.offsetHeight ) {
         this.height_calc = this.$refs.consult.offsetHeight - this.$refs.banner.offsetHeight - 40;
         clearTimeout(timer);
       }
-    }, 100);
-  },
-  activated() {
+    }, 200);
+
     const list = this.$refs.list;
     const id =
       this.pageTitle === "热门资讯"
@@ -82,7 +83,7 @@ export default {
     list.addEventListener("scroll", () => {
       let listFixedHeight = this.height_calc;
       let scrollHeight = this.$refs.list_in.offsetHeight;
-      let dyHeight = scrollHeight - listFixedHeight;
+      let dyHeight = scrollHeight - listFixedHeight - 10;
       if (
         list.scrollTop >= dyHeight &&
         this.pageNumber <= this.totalPages &&

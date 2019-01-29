@@ -14,29 +14,29 @@
       </div>
       <div class="m-auto kinds_box">
         <div class="row kinds">
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(1)" class="kind_pic" src="../assets/images/kind01.png">
             <p @click="goNext(1)" class="kind_title">{{ kindList[0] }}</p>
           </div>
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(2)" class="kind_pic" src="../assets/images/kind02.png">
             <p @click="goNext(2)" class="kind_title">{{ kindList[1] }}</p>
           </div>
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(3)" class="kind_pic" src="../assets/images/kind03.png">
             <p @click="goNext(3)" class="kind_title">{{ kindList[2] }}</p>
           </div>
         </div>
         <div class="row kinds">
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(4)" class="kind_pic" src="../assets/images/kind04.png">
             <p @click="goNext(4)" class="kind_title">{{ kindList[3] }}</p>
           </div>
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(5)" class="kind_pic" src="../assets/images/kind05.png">
             <p @click="goNext(5)" class="kind_title">{{ kindList[4] }}</p>
           </div>
-          <div class="col-4 m-auto">
+          <div class="col-4 m-auto kind">
             <img @click="goNext(6)" class="kind_pic" src="../assets/images/kind06.png">
             <p @click="goNext(6)" class="kind_title">{{ kindList[5] }}</p>
           </div>
@@ -240,6 +240,10 @@ a {
 .kinds {
   width: 100%;
   height: 50%;
+}
+
+.kind{
+  padding: 0;
 }
 
 .logo_box {
