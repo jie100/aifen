@@ -5,21 +5,25 @@ import Login from "@/components/login";
 import Register from "@/components/register";
 import ShangHai from "@/components/shanghai";
 import Ghxc from "@/components/ghxc";
+import ChaXun from "@/components/chaxun";
+import ChaXunResult from "@/components/chaxun_result";
+import Standard from "@/components/standard";
+import StandardView from "@/components/standard_view";
 import Message from "@/components/message";
+import MyMessage from "@/components/mymessage";
 import Member from "@/components/member";
 import Personal from "@/components/personal";
 import Consult from "@/components/consult";
-import ShangHaiArticle from "@/components/shanghai_article"
-import Article from "@/components/article"
-import Survey from "@/components/survey"
-import Union from "@/components/union"
-import Achievements from "@/components/achievements"
-import List from "@/components/list"
+import FenLei from "@/components/fenlei";
+import FenLeiResult from "@/components/fenlei_result";
+import Article from "@/components/article";
+import Survey from "@/components/survey";
+import List from "@/components/list";
 
 Vue.use(Router);
 
 export default new Router({
-  mode: "history",
+  mode: "hash",
   routes: [
     {
       path: "/",
@@ -78,6 +82,38 @@ export default new Router({
       }
     },
     {
+      path: "/chaxun",
+      name: "chaxun",
+      component: ChaXun,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
+      path: "/chaxun_result",
+      name: "chaxun_result",
+      component: ChaXunResult,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
+      path: "/standard",
+      name: "standard",
+      component: Standard,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
+      path: "/standard_view",
+      name: "standard_view",
+      component: StandardView,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
       path: "/consult",
       name: "consult",
       component: Consult,
@@ -89,6 +125,14 @@ export default new Router({
       path: "/message",
       name: "message",
       component: Message,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
+      path: "/mymessage",
+      name: "mymessage",
+      component: MyMessage,
       meta: { 
         keepAlive: true 
       }
@@ -110,9 +154,17 @@ export default new Router({
       }
     },
     {
-      path: "/shanghai_article",
-      name: "shanghai_article",
-      component: ShangHaiArticle,
+      path: "/fenlei",
+      name: "fenlei",
+      component: FenLei,
+      meta: { 
+        keepAlive: true 
+      }
+    },
+    {
+      path: "/fenlei_result",
+      name: "fenlei_result",
+      component: FenLeiResult,
       meta: { 
         keepAlive: true 
       }
@@ -129,22 +181,6 @@ export default new Router({
       path: "/survey",
       name: "survey",
       component: Survey,
-      meta: { 
-        keepAlive: true 
-      }
-    },
-    {
-      path: "/union",
-      name: "union",
-      component: Union,
-      meta: { 
-        keepAlive: true 
-      }
-    },
-    {
-      path: "/achievements",
-      name: "achievements",
-      component: Achievements,
       meta: { 
         keepAlive: true 
       }

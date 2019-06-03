@@ -1,30 +1,37 @@
 <template>
-  <div class="main consult" ref="consult">
-    <div class="contents m-auto">
-      <h5 class="title text_align_left">{{ article.title_name }}</h5>
-      <div class="row m-auto m-t-10">
-        <div class="col-8 text_align_left padding_0">
-          <span class="green fz-12">{{ article.author }}</span>
-          <span class="green m_l_10 fz-12" v-if="article.create_time" v-time="article.create_time"></span>
+  <div class="page">
+    <v-header title="文章详情"></v-header>
+    <div class="main consult" ref="consult">
+      <div class="contents m-auto">
+        <h5 class="title text_align_left">{{ article.title_name }}</h5>
+        <div class="row m-auto m-t-10">
+          <div class="col-8 text_align_left padding_0">
+            <span class="green fz-12">{{ article.author }}</span>
+            <span class="green m_l_10 fz-12" v-if="article.create_time">{{ article.create_time }}</span>
+          </div>
+          <div class="col-4 padding_0 text_align_right">
+            <span class="fz-12">{{ article.form_id + "人阅读" }}</span>
+          </div>
+          <div class="article_content m-t-15 fz-14" v-html="article.content"></div>
         </div>
-        <div class="col-4 padding_0 text_align_right">
-          <span class="fz-12">{{ article.form_id + "人阅读" }}</span>
-        </div>
-        <!-- <div class="m-t-10 banner_box">
-          <img width="100%" class="consult_banner" ref="banner" :src="article.thumbnail">
-        </div>-->
-        <div class="article_content m-t-15 fz-14" v-html="article.content"></div>
       </div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import footer from "@/components/footer";
+import header from "@/components/header";
 import api from "../store/api.js";
-import Time from "../directives/time.js";
+//import Time from "../directives/time.js";
 export default {
-  directives: {
-    Time
+  // directives: {
+  //   Time
+  // },
+  components:{
+    "v-header": header,
+    "v-footer": footer
   },
   data() {
     return {
@@ -39,7 +46,7 @@ export default {
     api.getArticlrContent(this.firstId).then(res => {
       if (res.status === 200) {
         const content = res.data;
-        content.create_time = this.formatDate(content.create_time);
+        //content.create_time = this.formatDate(content.create_time);
         this.article = content;
       }
     });
@@ -51,7 +58,7 @@ export default {
       api.getArticlrContent(id).then(res => {
         if (res.status === 200) {
           const content = res.data;
-          content.create_time = this.formatDate(content.create_time);
+          //content.create_time = this.formatDate(content.create_time);
           this.article = content;
         }
       });

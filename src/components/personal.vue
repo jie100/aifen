@@ -1,52 +1,74 @@
 <template>
-  <div class="main personal">
-    <div class="row m-auto personal_center">
-      <!-- <div class="col-4 max_width_72">
-        <img width="72px" src="../assets/images/head.png">
-      </div>-->
-      <div class="col-8 wechat_info">
-        <div class="wechat_name">{{ getUserName }}</div>
-        <!-- <span class="wechat_code">{{ '微信号: ' + wechat.code }}</span> -->
+  <div id="page">
+    <v-header title="个人中心"></v-header>
+    <div class="main personal">
+      <div class="row m-auto personal_center">
+        <!-- <div class="col-4 max_width_72">
+          <img width="72px" src="../assets/images/head.png">
+        </div>-->
+        <div class="col-8 wechat_info">
+          <div class="wechat_name">{{ getUserName }}</div>
+          <!-- <span class="wechat_code">{{ '微信号: ' + wechat.code }}</span> -->
+        </div>
       </div>
-    </div>
 
-    <div class="row personal_message">
-      <div class="col-3 max_width_22">
-        <img width="22px" src="../assets/images/message.png">
+      <div class="row personal_message">
+        <div class="col-3 max_width_22">
+          <img width="22px" src="../assets/images/message.png">
+        </div>
+        <div class="interact" @click="checkMessage">
+          <span>我的留言</span>
+          <sup v-if="getNewMessage" class="message_sup"></sup>
+        </div>
       </div>
-      <div class="interact">
-        <span>互动留言</span>
-        <sup v-if="getNewMessage" class="message_sup"></sup>
-      </div>
-    </div>
 
-    <div class="row ml-auto message_tip" v-if="getNewMessage" @click="checkMessage">
-      <div class="col-10">{{ "您收到"+ getNewMessage + "条互动留言消息" }}</div>
-      <div class="col-2">
-        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      <div class="row ml-auto message_tip" v-if="getNewMessage" @click="checkMessage">
+        <div class="col-10">{{ "您收到"+ getNewMessage + "条互动留言消息" }}</div>
+        <div class="col-2">
+          <i class="fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
       </div>
-    </div>
 
-    <div class="row m-auto logo_box">
-      <div class="col-4">
-        <img class="logo" src="../assets/images/logo01.png">
-      </div>
-      <div class="col-4">
-        <img class="logo" src="../assets/images/logo02.png">
-      </div>
-      <div class="col-4">
-        <img class="logo_lg" src="../assets/images/logo03.png">
+      <div @click="logout" class="login_out_btn">退出登录</div>
+
+      <div class="row m-auto logo_box">
+        <div class="col-4">
+          <img class="logo" src="../assets/images/logo01.png">
+        </div>
+        <div class="col-4">
+          <img class="logo" src="../assets/images/logo02.png">
+        </div>
+        <div class="col-4">
+          <img class="logo_lg" src="../assets/images/logo03.png">
+        </div>
       </div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import footer from "@/components/footer";
+import header from "@/components/header";
 import api from "../store/api";
+import cookie from "../cookie";
+
 export default {
+  components:{
+    "v-header": header,
+    "v-footer": footer
+  },
   methods: {
     checkMessage() {
-      this.$router.push("./message");
+      this.$router.push("./mymessage");
+    },
+    logout(){
+      api.loginOut().then(res => {
+        if (res.status === 200) {
+          cookie.setCookie("token", '');
+          this.$router.push("/login");
+        }
+      });
     }
   },
   mounted() {
@@ -137,6 +159,17 @@ export default {
   font-size: 12px;
   padding: 10px 0;
   background-color: white;
+}
+
+.login_out_btn {
+  margin: 20px auto;
+  color: #00a370;
+  border: 1px solid #00a370;
+  height: 30px;
+  width: 120px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 20px;
 }
 
 .logo {

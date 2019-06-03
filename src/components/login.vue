@@ -1,84 +1,91 @@
 <template>
-  <div class="login">
-    <div class="login_in">
-      <img class="login_title" src="../assets/images/login_title.png">
-      <!-- <div class="register_btn fz-14" @click="goRegister">注册</div> -->
-      <div class="head_frame m-auto" style="opacity:0;">
-        <!-- <img class="head_pic" src="../assets/images/head.png"> -->
-      </div>
-      <div class="login_info m-t-15">
-        <div class="row user_name">
-          <div class="col-2 user_cion">
-            <!-- <i class="fa fa-user" aria-hidden="true"></i> -->
-            <i class="fa fa-mobile fa-lg" aria-hidden="true"></i>
-          </div>
-          <div class="col-8">
-            <input
-              class="user_id"
-              type="text"
-              maxlength="11"
-              v-inputmask="controlNumber"
-              placeholder="请输入手机号"
-              v-model="userInfo.phone"
-            >
-          </div>
+  <div id="page">
+    <div class="login">
+      <div class="login_in">
+        <img class="login_title" src="../assets/images/login_title.png">
+        <!-- <div class="register_btn fz-14" @click="goRegister">注册</div> -->
+        <div class="head_frame m-auto" style="opacity:0;">
+          <!-- <img class="head_pic" src="../assets/images/head.png"> -->
         </div>
-        <div class="row password">
-          <div class="col-2 pw_icon">
-            <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+        <div class="login_info m-t-15">
+          <div class="row user_name">
+            <div class="col-2 user_cion">
+              <!-- <i class="fa fa-user" aria-hidden="true"></i> -->
+              <i class="fa fa-mobile fa-lg" aria-hidden="true"></i>
+            </div>
+            <div class="col-8">
+              <input
+                class="user_id"
+                type="text"
+                maxlength="11"
+                v-inputmask="controlNumber"
+                placeholder="请输入手机号"
+                v-model="userInfo.phone"
+              >
+            </div>
           </div>
-          <div class="col-5">
-            <!-- <input
-              class="pw_content"
-              v-if="openPw"
-              type="text"
-              placeholder="请输入密码"
-              v-model="userInfo.password"
-            >-->
-            <input
-              class="pw_content"
-              v-if="!openPw"
-              type="text"
-              placeholder="请输入验证码"
-              v-model="userInfo.code"
-            >
+          <div class="row password">
+            <div class="col-2 pw_icon">
+              <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+            </div>
+            <div class="col-5">
+              <!-- <input
+                class="pw_content"
+                v-if="openPw"
+                type="text"
+                placeholder="请输入密码"
+                v-model="userInfo.password"
+              >-->
+              <input
+                class="pw_content"
+                v-if="!openPw"
+                type="text"
+                placeholder="请输入验证码"
+                v-model="userInfo.code"
+              >
+            </div>
+            <div class="col-5 pw_eyes">
+              <!-- <i @click="togglePw" v-if="!openPw" class="fa fa-eye" aria-hidden="true"></i>
+              <i @click="togglePw" v-if="openPw" class="fa fa-eye-slash" aria-hidden="true"></i>-->
+              <span class="get_code fz-12" v-if="!hasCode" @click="getCode">获取验证码</span>
+              <span class="get_code fz-12" v-if="hasCode">{{ this.current + "s" }}</span>
+            </div>
           </div>
-          <div class="col-5 pw_eyes">
-            <!-- <i @click="togglePw" v-if="!openPw" class="fa fa-eye" aria-hidden="true"></i>
-            <i @click="togglePw" v-if="openPw" class="fa fa-eye-slash" aria-hidden="true"></i>-->
-            <span class="get_code fz-12" v-if="!hasCode" @click="getCode">获取验证码</span>
-            <span class="get_code fz-12" v-if="hasCode">{{ this.current + "s" }}</span>
+          <dir class="row tips">
+            <div class="col-2 pw_icon"></div>
+            <div class="col-8">未注册的手机号将自动创建账号</div>
+          </dir>
+          <div class="row">
+            <div @click="login" class="col-8 m-auto login_btn">登录</div>
           </div>
+          <!-- <div class="row">
+          <div class="col-8 m-auto forget_pw">忘记密码？</div>
+          </div>-->
         </div>
-        <dir class="row tips">
-          <div class="col-2 pw_icon"></div>
-          <div class="col-8">未注册的手机号将自动创建账号</div>
-        </dir>
-        <div class="row">
-          <div @click="login" class="col-8 m-auto login_btn">登录</div>
+        <!-- <div class="row m-auto loginBy">
+        <div class="col-6">
+          <i class="fa fa-wechat" aria-hidden="true"></i>
         </div>
-        <!-- <div class="row">
-        <div class="col-8 m-auto forget_pw">忘记密码？</div>
+        <div class="col-6">
+          <i class="fa fa-qq" aria-hidden="true"></i>
+        </div>
         </div>-->
       </div>
-      <!-- <div class="row m-auto loginBy">
-      <div class="col-6">
-        <i class="fa fa-wechat" aria-hidden="true"></i>
-      </div>
-      <div class="col-6">
-        <i class="fa fa-qq" aria-hidden="true"></i>
-      </div>
-      </div>-->
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import footer from "@/components/footer";
 import api from "../store/api.js";
 import cookie from "../cookie";
 import inputmask from "../directives/input_value.js";
 
 export default {
+  components:{
+    "v-footer": footer
+  },
   directives: {
     inputmask
   },
@@ -124,7 +131,6 @@ export default {
       this.openPw = !this.openPw;
     },
     goRegister() {
-      this.$store.commit("setFooter", false);
       this.$router.push("/register");
     },
     getCode() {
@@ -148,12 +154,14 @@ export default {
       api.login(userInfo).then(res => {
         if (res.status === 200) {
           if( res.data && res.data.message === "请补全信息" ){
+            cookie.setCookie("phone", userInfo.phone);
             this.$store.commit('setPhone', userInfo.phone);
             this.$router.push("/register");
           }else if( !res.data || res.data.message !== "请补全信息" ){
             this.$store.commit("setToken", res.data.token);
             this.$store.commit("setUserName", res.data.name);
             cookie.setCookie("phone", userInfo.phone);
+            cookie.setCookie("name", res.data.name);
             cookie.setCookie("token", res.data.token);
             this.$router.push("/home");
           }

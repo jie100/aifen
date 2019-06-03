@@ -1,40 +1,51 @@
 <template>
-  <div class="main survey">
-    <div class="m-auto survey_content">
-      <h6 class="survey_title">{{ survey.title }}</h6>
-      <!-- <div class="m-t-15 fz-12 content_box" v-html="survey.contents"></div>
-      <div class="row community m-t-10">
-        <div class="col-4 community_left">
-          <div class="m-t-15">社区数量</div>
-          <div class="m-t-10">{{ survey.community.community_num + "个" }}</div>
+<div id="page">
+    <v-header title="街道工作概况"></v-header>
+    <div class="main survey">
+      <div class="m-auto survey_content">
+        <h6 class="survey_title">{{ survey.title }}</h6>
+        <!-- <div class="m-t-15 fz-12 content_box" v-html="survey.contents"></div>
+        <div class="row community m-t-10">
+          <div class="col-4 community_left">
+            <div class="m-t-15">社区数量</div>
+            <div class="m-t-10">{{ survey.community.community_num + "个" }}</div>
+          </div>
+          <div class="col-8">
+            <div class="m-t-15">社区类型</div>
+            <div class="m-t-10">{{ survey.community.community_name }}</div>
+          </div>
         </div>
-        <div class="col-8">
-          <div class="m-t-15">社区类型</div>
-          <div class="m-t-10">{{ survey.community.community_name }}</div>
+        <div class="row unit">
+          <div class="col-4 unit_left">
+            <div class="m-t-15">单位数量</div>
+            <div class="m-t-10">{{ survey.unit.unit_num + "个" }}</div>
+          </div>
+          <div class="col-8">
+            <div class="m-t-15">单位类型</div>
+            <div class="m-t-10">{{ survey.unit.unit_name }}</div>
+          </div>
         </div>
+        <div class="total green fz-14 fw-bold">
+          {{ '居民总户数' + survey.total + '万户' }}
+        </div> -->
+        <div class="row m-t-10 content_box" v-html="survey.content"></div>
       </div>
-      <div class="row unit">
-        <div class="col-4 unit_left">
-          <div class="m-t-15">单位数量</div>
-          <div class="m-t-10">{{ survey.unit.unit_num + "个" }}</div>
-        </div>
-        <div class="col-8">
-          <div class="m-t-15">单位类型</div>
-          <div class="m-t-10">{{ survey.unit.unit_name }}</div>
-        </div>
-      </div>
-      <div class="total green fz-14 fw-bold">
-        {{ '居民总户数' + survey.total + '万户' }}
-      </div> -->
-      <div class="row m-t-10" v-html="survey.content"></div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import footer from "@/components/footer";
+import header from "@/components/header";
 import api from "../store/api.js";
 import requestId from "../store/request_id.js";
 export default {
+  components:{
+    "v-header": header,
+    "v-footer": footer
+  },
+
   data() {
     return {
       survey: {}
@@ -79,6 +90,7 @@ export default {
 .content_box{
   line-height: 20px;
   padding: 10px;
+  text-align: left;
 }
 
 .community,.unit {

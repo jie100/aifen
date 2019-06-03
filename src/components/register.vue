@@ -1,88 +1,53 @@
 <template>
-  <div class="register">
-    <div class="register_title">
-      <img width="194px" src="../assets/images/register.png">
-      <!-- <p>成为社会环保卫士</p> -->
+  <div id="page">
+    <div class="register">
+      <div class="register_title">
+        <img width="194px" src="../assets/images/register.png">
+        <!-- <p>成为社会环保卫士</p> -->
+      </div>
+      <div class="register_info">
+        <div class="row info_box name">
+          <div class="col-1 padding-0">
+            <i class="fa fa-user-o" aria-hidden="true"></i>
+          </div>
+          <div class="col-10 padding-0">
+            <input class="input_box" type="text" placeholder="请输入昵称" v-model="userInfo.name">
+          </div>
+          <div class="col-1 padding-0">*</div>
+        </div>
+        <div class="row info_box street">
+          <div class="col-1 padding-0">
+            <i class="fa fa-home" aria-hidden="true"></i>
+          </div>
+          <div class="col-11 padding-0">
+            <input
+              class="input_box"
+              type="text"
+              placeholder="请输入街道名(例如:快乐街道)"
+              v-model="userInfo.street"
+            >
+          </div>
+        </div>
+        <div class="row info_box street">
+          <div class="col-1 padding-0">
+            <i class="fa fa-home" aria-hidden="true"></i>
+          </div>
+          <div class="col-11 padding-0">
+            <input
+              class="input_box"
+              type="text"
+              placeholder="请输入小区名(例如:幸福小区)"
+              v-model="userInfo.quarter"
+            >
+          </div>
+        </div>
+        <dir class="row tips">标记 * 选项为必填项</dir>
+      </div>
+      <div class="row btn_box">
+        <button class="register_btn fz-14" @click="register">完成注册</button>
+      </div>
     </div>
-
-    <div class="register_info">
-      <div class="row info_box name">
-        <div class="col-1 padding-0">
-          <i class="fa fa-user-o" aria-hidden="true"></i>
-        </div>
-        <div class="col-10 padding-0">
-          <input class="input_box" type="text" placeholder="请输入昵称" v-model="userInfo.name">
-        </div>
-        <div class="col-1 padding-0">*</div>
-      </div>
-      <!-- <div class="row info_box password">
-        <div class="col-1 padding-0">
-          <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-        </div>
-        <div class="col-10 padding-0">
-          <input
-            class="input_box"
-            type="password"
-            placeholder="请输入登录密码"
-            v-model="userInfo.password"
-          >
-        </div>
-        <div class="col-1 padding-0">*</div>
-      </div> 
-      <div class="row info_box confirmPassword">
-        <div class="col-1 padding-0">
-          <i class="fa fa-unlock-alt" aria-hidden="true"></i>
-        </div>
-        <div class="col-10 padding-0">
-          <input
-            class="input_box"
-            type="password"
-            placeholder="请再确认登录密码"
-            v-model="userInfo.confirmPassword"
-          >
-        </div>
-        <div class="col-1 padding-0">*</div>
-      </div>
-      <div class="row info_box phone">
-        <div class="col-1 padding-0">
-          <i class="fa fa-mobile fa-lg" aria-hidden="true"></i>
-        </div>
-        <div class="col-10 padding-0">
-          <input class="input_box" type="text" placeholder="请输入手机号" v-model="userInfo.phone">
-        </div>
-        <div class="col-1 padding-0">*</div>
-      </div> -->
-      <div class="row info_box street">
-        <div class="col-1 padding-0">
-          <i class="fa fa-home" aria-hidden="true"></i>
-        </div>
-        <div class="col-11 padding-0">
-          <input
-            class="input_box"
-            type="text"
-            placeholder="请输入街道名(例如:快乐街道)"
-            v-model="userInfo.street"
-          >
-        </div>
-      </div>
-      <div class="row info_box street">
-        <div class="col-1 padding-0">
-          <i class="fa fa-home" aria-hidden="true"></i>
-        </div>
-        <div class="col-11 padding-0">
-          <input
-            class="input_box"
-            type="text"
-            placeholder="请输入小区名(例如:幸福小区)"
-            v-model="userInfo.quarter"
-          >
-        </div>
-      </div>
-      <dir class="row tips">标记 * 选项为必填项</dir>
-    </div>
-    <div class="row btn_box">
-      <button class="register_btn fz-14" @click="register">完成注册</button>
-    </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
@@ -90,8 +55,12 @@
 import api from "../store/api.js";
 import axios from "axios";
 import cookie from '../cookie'
+import footer from "@/components/footer";
 
 export default {
+  components:{
+    "v-footer": footer
+  },
   data() {
     return {
       userInfo: {
@@ -117,7 +86,6 @@ export default {
         api.register(registerRequest).then(res => {
           if (res.status === 200) {
             const data = res.data;
-            this.$store.commit("setFooter", true);
             this.$store.commit("setToken", data.token);
             this.$store.commit("setUserName", data.name);
             cookie.setCookie("token", data.token);

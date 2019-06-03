@@ -1,58 +1,44 @@
 <template>
-  <div class="main shanghai">
-    <div class="shanghai_content">
-      <img class="shanghai_title" src="../assets/images/sha_title.jpg">
-      <div class="row">
-        <div class="col-12 m-auto m-t-15">
-          <img class="shanghai_pic" @click="goTo(1)" src="../assets/images/sha_pic01.jpg">
-        </div>
-        <div class="col-12 m-auto m-t-15">
-          <img class="shanghai_pic" @click="goTo(2)" src="../assets/images/sha_pic02.jpg">
-        </div>
-        <div class="col-12 m-auto m-t-15">
-          <img class="shanghai_pic" @click="goTo(3)" src="../assets/images/sha_pic03.jpg">
+  <div id="page">
+    <v-header title="上海垃圾分类知识"></v-header>
+    <div class="main shanghai">
+      <div class="shanghai_content">
+        <img class="shanghai_title" src="../assets/images/sha_title.jpg">
+        <div class="row">
+          <div class="col-12 m-auto m-t-15">
+            <img class="shanghai_pic" @click="goTo" src="../assets/images/sha_pic01.png">
+          </div>
+          <div class="col-12 m-auto m-t-15">
+            <a href="http://weixin.sh-service.com/sites/feiguan/trashTypes_2/TrashQuery.aspx">
+              <img class="shanghai_pic" src="../assets/images/sha_pic02.png">
+            </a>
+          </div>
+          <div class="col-12 m-auto m-t-15">
+            <a href="https://web.shobserver.com/thirdParty/recycling50_ver06/index.html">
+              <img class="shanghai_pic" src="../assets/images/sha_pic03.png">
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import footer from "@/components/footer";
+import header from "@/components/header";
 export default {
   data() {
     return {};
   },
+  components:{
+    "v-header": header,
+    "v-footer": footer
+  },
   methods: {
-    goTo(index) {
-      switch (index) {
-        case 1: {
-          this.$store.commit("setSubTitle", "上海垃圾分类四分类知识");
-          this.$store.commit(
-            "setShangHaiBanner",
-            require("../assets/images/shanghai/classify.jpg")
-          );
-          this.$router.push("/shanghai_article");
-          break;
-        }
-        case 2: {
-          this.$store.commit("setSubTitle", "垃圾去哪了");
-          this.$store.commit(
-            "setShangHaiBanner",
-            require("../assets/images/shanghai/where.jpg")
-          );
-          this.$router.push("/shanghai_article");
-          break;
-        }
-        case 3: {
-          this.$store.commit("setSubTitle", "垃圾分类的价值");
-          this.$store.commit(
-            "setShangHaiBanner",
-            require("../assets/images/shanghai/value.jpg")
-          );
-          this.$router.push("/shanghai_article");
-          break;
-        }
-      }
+    goTo() {
+      this.$router.push("/fenlei");
     }
   }
 };

@@ -3,7 +3,7 @@
     <div class="back_icon col-1 m-auto">
       <i @click="goBack" class="fa fa-chevron-left" aria-label="Add Row" title="Add Row"></i>
     </div>
-    <h6 class="title col-10 m-auto">{{ getTitle }}</h6>
+    <h6 class="title col-10 m-auto">{{ title }}</h6>
   </div>
 </template>
 
@@ -12,6 +12,12 @@ export default {
   data() {
     return {
     };
+  },
+  props: {
+    title: {
+        type: String,
+        default: '' 
+    }
   },
   methods: {
     goBack: function() {

@@ -1,77 +1,83 @@
 
 <template>
-  <div class="home">
-    <div class="homepage">
-      <div class="row m-auto search" style="text-align:left;">
-        <div class="col-9 ml-auto search_box">
-          <i class="fa fa-search" aria-hidden="true" @click="search"></i>
-          <input type="text" class="search_input" v-model="keyWords">
-        </div>
-        <div class="col-2 message_tip">
-          <img class="message" src="../assets/images/message_tip.png" @click="checkMessage">
-          <sup v-if="hasMessage" class="message_sup"></sup>
-        </div>
-      </div>
-      <div class="m-auto kinds_box">
-        <div class="row kinds">
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(1)" class="kind_pic" src="../assets/images/kind01.png">
-            <p @click="goNext(1)" class="kind_title">{{ kindList[0] }}</p>
+  <div id="page">
+    <div class="home">
+      <div class="homepage">
+        <div class="row m-auto search" style="text-align:left;">
+          <div class="col-9 ml-auto search_box">
+            <i class="fa fa-search" aria-hidden="true" @click="search"></i>
+            <input type="text" class="search_input" v-model="keyWords">
           </div>
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(2)" class="kind_pic" src="../assets/images/kind02.png">
-            <p @click="goNext(2)" class="kind_title">{{ kindList[1] }}</p>
-          </div>
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(3)" class="kind_pic" src="../assets/images/kind03.png">
-            <p @click="goNext(3)" class="kind_title">{{ kindList[2] }}</p>
+          <div class="col-2 message_tip">
+            <img class="message" src="../assets/images/message_tip.png" @click="checkMessage">
+            <sup v-if="hasMessage" class="message_sup"></sup>
           </div>
         </div>
-        <div class="row kinds">
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(4)" class="kind_pic" src="../assets/images/kind04.png">
-            <p @click="goNext(4)" class="kind_title">{{ kindList[3] }}</p>
+        <div class="m-auto kinds_box">
+          <div class="row kinds">
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(1)" class="kind_pic" src="../assets/images/kind01.png">
+              <p @click="goNext(1)" class="kind_title">{{ kindList[0] }}</p>
+            </div>
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(2)" class="kind_pic" src="../assets/images/kind02.png">
+              <p @click="goNext(2)" class="kind_title">{{ kindList[1] }}</p>
+            </div>
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(3)" class="kind_pic" src="../assets/images/kind03.png">
+              <p @click="goNext(3)" class="kind_title">{{ kindList[2] }}</p>
+            </div>
           </div>
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(5)" class="kind_pic" src="../assets/images/kind05.png">
-            <p @click="goNext(5)" class="kind_title">{{ kindList[4] }}</p>
+          <div class="row kinds">
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(4)" class="kind_pic" src="../assets/images/kind04.png">
+              <p @click="goNext(4)" class="kind_title">{{ kindList[3] }}</p>
+            </div>
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(5)" class="kind_pic" src="../assets/images/kind05.png">
+              <p @click="goNext(5)" class="kind_title">{{ kindList[4] }}</p>
+            </div>
+            <div class="col-4 m-auto kind">
+              <img @click="goNext(6)" class="kind_pic" src="../assets/images/kind06.png">
+              <p @click="goNext(6)" class="kind_title">{{ kindList[5] }}</p>
+            </div>
           </div>
-          <div class="col-4 m-auto kind">
-            <img @click="goNext(6)" class="kind_pic" src="../assets/images/kind06.png">
-            <p @click="goNext(6)" class="kind_title">{{ kindList[5] }}</p>
-          </div>
-        </div>
-        <div class="row m-auto logo_box">
-          <div class="col-4">
-            <img class="logo" src="../assets/images/logo01.png">
-          </div>
-          <div class="col-4">
-            <img class="logo" src="../assets/images/logo02.png">
-          </div>
-          <div class="col-4">
-            <img class="logo_lg" src="../assets/images/logo03.png">
+          <div class="row m-auto logo_box">
+            <div class="col-4">
+              <img class="logo" src="../assets/images/logo01.png">
+            </div>
+            <div class="col-4">
+              <img class="logo" src="../assets/images/logo02.png">
+            </div>
+            <div class="col-4">
+              <img class="logo_lg" src="../assets/images/logo03.png">
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
 import api from "../store/api";
 import cookie from "../cookie";
-
+import footer from "@/components/footer";
 export default {
+  components:{
+    "v-footer": footer
+  },
   data() {
     return {
       hasMessage: false,
       keyWords: "",
       kindList: [
-        "上海垃分知识",
-        "共和新垃分",
-        "垃分简讯",
-        "成员风采",
-        "互动消息",
+        "分类知识",
+        "街道工作",
+        "简讯推送",
+        "案例风采",
+        "互动留言",
         "个人中心"
       ]
     };
@@ -97,10 +103,18 @@ export default {
       if (this.keyWords.trim()) {
         this.$store.commit("setKeyWords", this.keyWords);
         this.$router.push("/list");
+      }else{
+        alert('请先输入要查询的内容！')
       }
     },
     checkMessage() {
-      this.$router.push("./message");
+      const token = this.$store.state.token || cookie.getCookie("token");
+      if( token ){
+        this.$router.push("./mymessage");
+      }else{
+        alert('需要先登录才能查看我的留言哦！');
+        this.$router.push("./login");
+      }
     },
     goNext(num) {
       switch (num) {
@@ -170,7 +184,7 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
-  min-height: 600px;
+  min-height: 550px;
   background-image: url("../assets/images/home_bg.png");
   background-size: 100%;
   background-repeat: no-repeat;

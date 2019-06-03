@@ -39,6 +39,8 @@ const doApi = {
   CODE: 'user/code',
   // 提交登陆接口
   LOGIN: "user/login",
+  //退出登录
+  LOGIN_OUT: "user/loginOut",
   //用户信息
   USER_INFO: "user/info",
   //搜索
@@ -54,7 +56,11 @@ const doApi = {
   //留言接收
   RECEIVE_ALL_MESSAGE: 'bbs/queryAll',
   //最新回复
-  REPLY: 'bbs/query'
+  REPLY: 'bbs/query',
+  //我的留言
+  MY_MESSAGE: 'bbs/queryMyBbs',
+  //查询小区
+  CHAXUNXIAOQU: 'search/street',
 };
 
 const fetch = function(url, data, method) {
@@ -80,6 +86,10 @@ const api = {
   // 登陆信息
   login(data) {
     return fetch(host + doApi.LOGIN, data, "post");
+  },
+  // 退出登陆
+  loginOut(data) {
+    return fetch(host + doApi.LOGIN_OUT, data, "post");
   },
   //用户信息
   getUserInfo(data) {
@@ -116,6 +126,15 @@ const api = {
   //检查回复未读留言
   reply(data){
     return fetch(host + doApi.REPLY, data, "post");
-  }
+  },
+  //查询我的留言
+  myMessage(data){
+    return fetch(host + doApi.MY_MESSAGE, data, "post");
+  },
+  //查询小区
+  chaxunXiaoQu(keyWords) {
+    const data = "?name=" + keyWords;
+    return fetch(host + doApi.CHAXUNXIAOQU, data, "get");
+  },
 };
 export default api;

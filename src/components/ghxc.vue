@@ -1,23 +1,35 @@
 <template>
-  <div class="main ghxc">
-    <img class="ghxc_title" src="../assets/images/ghxc_title.png">
-    <div class="row">
-      <div class="col-12 m-auto m-t-10">
-        <img @click="viewDetail(1)" class="ghxc_pic" src="../assets/images/ghxc_pic01.jpg">
+<div id="page">
+    <v-header title="街道工作概况"></v-header>
+    <div class="main ghxc">
+      <img class="ghxc_title" src="../assets/images/ghxc_title.png">
+      <div class="row">
+        <div class="col-12 m-auto m-t-10">
+          <img @click="viewDetail(1)" class="ghxc_pic" src="../assets/images/ghxc_pic01.png">
+        </div>
+        <div class="col-12 m-auto m-t-10">
+          <img @click="viewDetail(2)" class="ghxc_pic" src="../assets/images/ghxc_pic02.png">
+        </div>
+        <div class="col-12 m-auto m-t-10">
+          <img @click="viewDetail(3)" class="ghxc_pic" src="../assets/images/ghxc_pic03.png">
+        </div>
       </div>
-      <div class="col-12 m-auto m-t-10">
-        <img @click="viewDetail(2)" class="ghxc_pic" src="../assets/images/ghxc_pic02.jpg">
-      </div>
-      <div class="col-12 m-auto m-t-10">
-        <img @click="viewDetail(3)" class="ghxc_pic" src="../assets/images/ghxc_pic03.jpg">
-      </div>
+      <div class="ghxc_bg"></div>
     </div>
-    <div class="ghxc_bg"></div>
+    <v-footer></v-footer>
   </div>
+
 </template>
 
 <script>
+import footer from "@/components/footer";
+import header from "@/components/header";
+
 export default {
+  components:{
+    "v-header": header,
+    "v-footer": footer
+  },
   data() {
     return {
       
@@ -30,12 +42,11 @@ export default {
           this.$router.push('/survey');
           break;
         case 2: 
-          this.$router.push('/union');
+          this.$router.push('/standard');
           break;
         case 3: 
-          this.$router.push('/achievements');
+          this.$router.push('/chaxun');
           break;
-
       }
     }
   }

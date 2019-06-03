@@ -11,44 +11,37 @@ const store = new Vuex.Store({
         //定义state属性
         phone:'',
         token: '',
-        isLogined: false,
         userName:'',
-        showHeader: false,
-        showFooter: true,
         title: '',
-        subTitle: '',
         shanghaiBanner: '',
         articleRequestId: '',
         keyWords: '',
         newMessages: [],
+        fenlei_index: 1,
+        standard_index: 1,
+        chacun_key: '',
     },
     mutations: {
+        setChaxunKey(state, chacun_key){
+            state.chacun_key = chacun_key
+        },
+        setStandardIndex(state, standard_index){
+            state.standard_index = standard_index
+        },
+        setFenLeiIndex(state, fenlei_index){
+            state.fenlei_index = fenlei_index
+        },
         setPhone(state, phone){
             state.phone = phone
         },
         setToken(state, token){
             state.token = token
         },
-        showHeader (state, hasHeader) {
-            state.showHeader = hasHeader
-        },
-        setFooter (state, hasFooter) {
-            state.showFooter = hasFooter
-        },
         setUserName(state, name) {
             state.userName = name
         },
         setTitle (state, title) {
             state.title = title
-        },
-        setLogin( state, isLogined ){
-            state.isLogined = isLogined
-        },
-        setSubTitle (state, title) {
-            state.subTitle = title
-        },
-        setShangHaiBanner (state, src) {
-            state.shanghaiBanner = src
         },
         setArticleRequestId(state, id) {
             state.articleRequestId = id

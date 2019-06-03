@@ -1,59 +1,66 @@
 <template>
-  <div class="main consult" ref="consult">
-    <div class="row header">
-      <div class="back_icon col-1 m-auto">
-        <i @click="goBack" class="fa fa-chevron-left" aria-label="Add Row" title="Add Row"></i>
-      </div>
-      <div class="title col-10 m-auto">
-        <div class="row col-11 m-auto">
-          <div @click="changToCurrent('hot')" class="col-6" :class="active?'active':''">热门咨询</div>
-          <div @click="changToCurrent('related')" class="col-6" :class="!active?'active':''">相关报道</div>
+  <div id="page">
+    <v-header title="简讯推送"></v-header>
+    <div class="main consult" ref="consult">
+      <div class="row subheader">
+        <div class="title col-9 m-auto">
+          <div class="row col-11 m-auto">
+            <div @click="changToCurrent('hot')" class="col-6 subtitle" :class="active?'active':''">简讯报道</div>
+            <div @click="changToCurrent('related')" class="col-6 subtitle" :class="!active?'active':''">街道报道</div>
+          </div>
         </div>
       </div>
-    </div>
-    <img class="consult_banner" ref="banner" src="../assets/images/consult.jpg">
-    <div class="consult_content" :style="{ height: (height_calc+'px') }" ref="list">
-      <ul class="consult_content_list" ref="list_in">
-        <li class="content_box" v-for="consult in getConsults" :key="consult.contentId">
-          <div class="row" @click="viewDetail(consult.contentId)">
-            <div class="col-8">
-              <div class="fz-14">{{ consult.titleName }}</div>
-              <div class="else_info">
-                <i class="fa fa-clock-o" aria-hidden="true"></i>
-                <span v-time="consult.createTime"></span>
-                <i class="fa fa-eye m_l_10" aria-hidden="true"></i>
-                <span>{{ consult.clicks }}</span>
+      <!-- <img class="consult_banner" ref="banner" src="../assets/images/consult.jpg"> -->
+      <div class="consult_content" ref="list">
+        <ul class="consult_content_list" ref="list_in">
+          <li class="content_box" v-for="consult in getConsults" :key="consult.contentId">
+            <div class="row" @click="viewDetail(consult.contentId, consult.contentUrl)">
+              <div class="col-8 article_title">
+                <div class="fz-14 title_box">{{ consult.titleName }}</div>
+                <div class="else_info">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                  <span>{{ consult.createTime }}</span>
+                  <i class="fa fa-eye m_l_10" aria-hidden="true"></i>
+                  <span>{{ consult.clicks }}</span>
+                </div>
+              </div>
+              <div class="col-4" style="min-height:50px">
+                <img class="member_img" width="100%" :src="consult.titleUrl">
               </div>
             </div>
-            <div class="col-4" style="min-height:50px">
-              <img class="member_img" width="100%" :src="consult.titleUrl">
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="loading" v-if="loading">
-        <i class="fa fa-spinner fa-lg transform" aria-hidden="true"></i>
-        <span>Loading</span>
+          </li>
+        </ul>
+        <div class="loading" v-if="loading">
+          <i class="fa fa-spinner fa-lg transform" aria-hidden="true"></i>
+          <span>Loading</span>
+        </div>
+        <div class="loading fz-12" v-if="end">已经到底啦！</div>
       </div>
-      <div class="loading fz-12" v-if="end">已经到底啦！</div>
     </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import header from "@/components/header";
+import footer from "@/components/footer";
 import api from "../store/api.js";
-import Time from "../directives/time.js";
+//import Time from "../directives/time.js";
 import requestId from "../store/request_id.js";
 
 export default {
-  directives: {
-    Time
+  components:{
+    "v-header": header,
+    "v-footer": footer
   },
+  // directives: {
+  //   Time
+  // },
   data() {
     return {
       consults: [],
       active: true,
-      height_calc: "",
+      //height_calc: "",
       pageTitle: "",
       pageNumber: 1,
       imgPrePath: "http://39.98.78.200:8080/ofcms-admin",
@@ -67,21 +74,13 @@ export default {
     this.toGetArticleList(id, this.pageNumber);
   },
   activated() {
-    const self = this;
-    const timer = setTimeout(() => {
-      if ( !this.height_calc && this.$refs.consult.offsetHeight && this.$refs.banner.offsetHeight ) {
-        this.height_calc = this.$refs.consult.offsetHeight - this.$refs.banner.offsetHeight - 40;
-        clearTimeout(timer);
-      }
-    }, 200);
-
     const list = this.$refs.list;
     const id =
-      this.pageTitle === "热门资讯"
+      this.pageTitle === "简讯报道"
         ? requestId.listId.consult_hot
         : requestId.listId.consult_related;
     list.addEventListener("scroll", () => {
-      let listFixedHeight = this.height_calc;
+      let listFixedHeight = list.offsetHeight;
       let scrollHeight = this.$refs.list_in.offsetHeight;
       let dyHeight = scrollHeight - listFixedHeight - 10;
       if (
@@ -105,9 +104,6 @@ export default {
       let lastdate = new Date(date);
       return lastdate.getTime();
     },
-    goBack() {
-      window.history.length > 1 ? this.$router.go(-1) : this.$router.push("/");
-    },
     toGetArticleList(id, pageNumber) {
       this.loading = true;
       this.end = false;
@@ -118,7 +114,7 @@ export default {
           contents = res.data.collection;
           this.totalPages = res.data.totalCount;
           contents.forEach(item => {
-            item.createTime = this.formatDate(item.createTime);
+            //item.createTime = this.formatDate(item.createTime);
             item.titleUrl = this.imgPrePath + item.titleUrl;
           });
           this.consults = this.consults.concat(contents);
@@ -130,24 +126,30 @@ export default {
       let id = 0;
       if (text === "hot" && !this.active) {
         this.active = true;
-        this.pageTitle = "热门资讯";
+        this.pageTitle = "简讯报道";
         id = requestId.listId.consult_hot;
         this.pageNumber = 1;
         this.consults = [];
         this.toGetArticleList(id, this.pageNumber);
       } else if (text === "related" && this.active) {
         this.active = false;
-        this.pageTitle = "相关报道";
+        this.pageTitle = "街道报道";
         id = requestId.listId.consult_related;
         this.pageNumber = 1;
         this.consults = [];
         this.toGetArticleList(id, this.pageNumber);
       }
     },
-    viewDetail(id) {
-      this.$store.commit("setTitle", this.pageTitle);
-      this.$store.commit("setArticleRequestId", id);
-      this.$router.push("/article");
+    viewDetail(id, url) {
+      if(url&&url.length>0){
+        window.open(url);
+        // this.$store.commit("setIframeUrl", url);
+        // this.$router.push("/out_view");
+      }else{
+        this.$store.commit("setTitle", this.pageTitle);
+        this.$store.commit("setArticleRequestId", id);
+        this.$router.push("/article");
+      }
     }
   },
   destroyed() {
@@ -163,14 +165,14 @@ export default {
 }
 
 .consult {
-  height: calc(100% - 50px) !important;
+  height: calc(100% - 90px) !important;
 }
 
-.header {
+.subheader {
   position: relative;
   left: 0;
   top: 0;
-  background-color: #00a370;
+  background-color: #b2e3d4;
   width: 100vw;
   height: 40px;
   color: white;
@@ -185,9 +187,15 @@ export default {
   line-height: 40px;
 }
 
+.subtitle{
+  color: gray;
+}
+
 .active {
   font-weight: bold;
   border-bottom: 4px solid #ff6418;
+  color: green;
+  height: 40px;
 }
 
 .consult_banner {
@@ -196,12 +204,22 @@ export default {
 
 .consult_content {
   width: 100%;
+  height: calc( 100% - 40px );
   overflow: auto;
 }
 
 .content_box {
   padding: 15px 0;
   border-bottom: 1px solid lightgray;
+}
+
+.article_title{
+  height: 86px;
+}
+
+.title_box{
+  height: 66px;
+	overflow: hidden;
 }
 
 .else_info {

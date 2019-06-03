@@ -1,7 +1,8 @@
 <template>
   <div id="page">
-    <v-header title="互动留言"></v-header>
+    <v-header title="我的留言"></v-header>
     <div class="main message">
+      <img class="mymessage" src="../assets/images/mymessage.png">
       <ul class="message_list">
         <li class="message_box" v-for="item in messagesList" :key="item.bbsId">
           <div class="row">
@@ -67,22 +68,28 @@ export default {
     };
   },
   mounted() {
-    let newMessages = this.$store.state.newMessages;
-    api.recieveAllMessage().then(res => {
-      if (res.status === 200) {
-        this.messagesList = [];
-        const data = res.data;
-        data.forEach((item, i) => {
-          const content = {
-            bbsId: item.bbsId,
-            userName: item.userName,
-            asker_words: item.content,
-            reply: item.revContent
-          };
-          this.messagesList.push(content);
-        });
-      }
-    });
+    const token = this.$store.state.token || cookie.getCookie("token");
+    if (token) {
+      api.myMessage().then(res => {
+        if (res.status === 200) {
+          const newMessages = res.data;
+          if (newMessages && newMessages.length > 0) {
+            newMessages.forEach(item => {
+              const content = {
+                bbsId: item.bbsId,
+                userName: item.userName,
+                asker_words: item.content,
+                reply: item.revContent
+              };
+              this.messagesList.push(content);
+            });
+          }
+        }
+      });
+    } else {
+      alert("需要先登录才能查看我的留言哦！");
+      this.$router.push("./login");
+    }
   },
   methods: {
     toWrite() {
@@ -105,7 +112,7 @@ export default {
         api.sendMessage(data).then(res => {
           if (res.status === 200) {
             const newMessage = {
-              asker_name: "jackson",
+              userName: item.userName,
               asker_words: data.content,
               reply: null
             };
@@ -146,6 +153,12 @@ export default {
   padding: 15px 0;
   background-color: white;
   border-radius: 8px;
+}
+
+.mymessage {
+  width: calc(100% - 30px);
+  display: block;
+  margin: 15px auto 0;
 }
 
 .message_list {
